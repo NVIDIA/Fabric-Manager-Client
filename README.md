@@ -21,6 +21,9 @@ On Ubuntu, this package is named "libjsoncpp-dev"
 On RHEL, this package is named "jsoncpp-devel".  
 The [EPEL repository](https://www.redhat.com/en/blog/install-epel-linux) must be set up on your system to access this package.
 
+
+Make to build the binary fmpm
+
 ## License
 
 By downloading or using this software, I agree to the terms of the [LICENSE](LICENSE)

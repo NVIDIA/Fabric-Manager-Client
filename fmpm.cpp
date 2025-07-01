@@ -416,20 +416,13 @@ int main(int argc, char **argv)
     connectParams.version = fmConnectParams_version;
 
     memset(connectParams.addressInfo, 0, sizeof(connectParams.addressInfo));
-    if ( strnlen(mUnixSockPath, MAX_PATH_LEN) > 0 )
-    {
+    if (strnlen(mUnixSockPath, MAX_PATH_LEN) > 0) {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mUnixSockPath);
         connectParams.addressIsUnixSocket = 1;
-    }
-    if ( strnlen(mHostname, MAX_PATH_LEN) > 0 )
-    {
+    } else {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mHostname);
         connectParams.addressIsUnixSocket = 0;
     }
-
-
-    strncpy(connectParams.addressInfo, mHostname, sizeof(mHostname));
-    connectParams.addressIsUnixSocket = 0;
 
     fmReturn = fmConnect(&connectParams, &fmHandle);
     if (fmReturn != FM_ST_SUCCESS){

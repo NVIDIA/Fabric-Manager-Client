@@ -52,7 +52,7 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
         haveSeen[partId] = 1;
 
         partitionIds[*numPartitions] = partId;
-        *numPartitions++;
+        (*numPartitions)++;
 
         token = strtok(NULL, ",");
     }
@@ -420,11 +420,13 @@ int main(int argc, char **argv)
     {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mUnixSockPath);
         connectParams.addressIsUnixSocket = 1;
+		connectParams.addressType = NV_FM_API_ADDR_TYPE_UNIX;
     }
     if ( strnlen(mHostname, MAX_PATH_LEN) > 0 )
     {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mHostname);
         connectParams.addressIsUnixSocket = 0;
+		connectParams.addressType = NV_FM_API_ADDR_TYPE_INET;
     }
 
 

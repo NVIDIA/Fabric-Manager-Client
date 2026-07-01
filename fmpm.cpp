@@ -47,12 +47,13 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
             return FM_ST_BADPARAM;
         }
 
-        if ( haveSeen[partId] )
-            continue; /* Just ignore it and move on */
-        haveSeen[partId] = 1;
+        if ( !haveSeen[partId] )
+        {
+            haveSeen[partId] = 1;
 
-        partitionIds[*numPartitions] = partId;
-        (*numPartitions)++;
+            partitionIds[*numPartitions] = partId;
+            (*numPartitions)++;
+        }
 
         token = strtok(NULL, ",");
     }

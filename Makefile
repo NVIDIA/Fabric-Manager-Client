@@ -1,7 +1,7 @@
-IDIR := ∕usr∕include
+IDIR := /usr/include
 CXXFLAGS = -I $(IDIR) $(shell pkg-config --cflags jsoncpp)
 
-LDIR := ∕usr∕lib
+LDIR := /usr/lib
 LDFLAGS= -L$(LDIR) -lnvfm -ljsoncpp
 
 fmpm: fmpm.o

@@ -413,6 +413,7 @@ int main(int argc, char **argv)
 
     /* Connect to Fabric Manager instance */
     fmConnectParams_t connectParams;
+    memset(&connectParams, 0, sizeof(connectParams));
     connectParams.timeoutMs = 1000; // in milliseconds
     connectParams.version = fmConnectParams_version;
 

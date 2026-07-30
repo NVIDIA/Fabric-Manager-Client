@@ -359,6 +359,10 @@ int main(int argc, char **argv)
                 std::cerr << "Error: -d option requires partition ID." << std::endl;
                 return FM_ST_BADPARAM;
             }
+            if ( partitionId >= FM_MAX_FABRIC_PARTITIONS ) {
+                std::cout << "Invalid Partition ID." << std::endl;
+                return FM_ST_BADPARAM;
+            }
         } else if (std::string(argv[i]) == "--set-activated-list") {
             operation = SHARED_FABRIC_CMD_SET_ACTIVATED_PARTITION_LIST;
             if (i + 1 < argc) {

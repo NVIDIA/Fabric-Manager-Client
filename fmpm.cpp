@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string.h>
+#include <vector>
 #include <json/json.h>
 #include "nv_fm_agent.h"
 
@@ -32,7 +33,8 @@ typedef enum SharedFabricCmdEnum
 fmReturn_t
 parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partitionIds, unsigned * numPartitions)
 {
-    char * token = strtok((char *)partitionListStr.c_str(), ",");
+    std::vector<char> mutableCopy(partitionListStr.c_str(), partitionListStr.c_str() + partitionListStr.length() + 1);
+    char * token = strtok(mutableCopy.data(), ",");
     int haveSeen[FM_MAX_FABRIC_PARTITIONS] = { 0 };
 
     *numPartitions = 0;

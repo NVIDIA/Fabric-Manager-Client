@@ -232,7 +232,7 @@ getNvlinkFailedDevices(fmHandle_t fmHandle)
     fmReturn = fmGetNvlinkFailedDevices(fmHandle, &nvlinkFailedDevice);
     if ( fmReturn != FM_ST_SUCCESS )
     {
-        std::cout << "Failed to NVLink failed devices. fmReturn: " << fmReturn << std::endl;
+        std::cout << "Failed to get NVLink failed devices. fmReturn: " << fmReturn << std::endl;
         return fmReturn;
     }
 

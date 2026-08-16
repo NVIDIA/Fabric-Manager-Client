@@ -32,7 +32,13 @@ typedef enum SharedFabricCmdEnum
 fmReturn_t
 parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partitionIds, unsigned * numPartitions)
 {
-    char * token = strtok((char *)partitionListStr.c_str(), ",");
+    char *partitionListCstr = strdup(partitionListStr.c_str());
+    if (partitionListCstr == NULL)
+    {
+        return FM_ST_GENERIC_ERROR;
+    }
+
+    char * token = strtok(partitionListCstr, ",");
     int haveSeen[FM_MAX_FABRIC_PARTITIONS] = { 0 };
 
     *numPartitions = 0;
@@ -44,6 +50,7 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
         if ( partId < 0 || partId >= FM_MAX_FABRIC_PARTITIONS )
         {
             printf("Invalid partition Id %u was given.\n", partId);
+            free(partitionListCstr);
             return FM_ST_BADPARAM;
         }
 
@@ -58,6 +65,7 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
         token = strtok(NULL, ",");
     }
 
+    free(partitionListCstr);
     return FM_ST_SUCCESS;
 }
 

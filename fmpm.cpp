@@ -43,7 +43,7 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
 
         if ( partId < 0 || partId >= FM_MAX_FABRIC_PARTITIONS )
         {
-            printf("Invalid partition Id %u was given.\n", partId);
+            printf("Invalid partition Id %d was given.\n", partId);
             return FM_ST_BADPARAM;
         }
 

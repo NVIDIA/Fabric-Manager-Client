@@ -340,20 +340,38 @@ int main(int argc, char **argv)
         } else if (std::string(argv[i]) == "-a") {
             operation = SHARED_FABRIC_CMD_ACTIVATE_PARTITION;
             if (i + 1 < argc) {
-                partitionId = std::stoul(argv[i + 1]);
+                unsigned long pid;
+                try {
+                    pid = std::stoul(argv[i + 1]);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error: -a option requires a valid partition ID." << std::endl;
+                    return 1;
+                }
+                if ( pid >= FM_MAX_FABRIC_PARTITIONS ) {
+                    std::cout << "Invalid Partition ID." << std::endl;
+                    return FM_ST_BADPARAM;
+                }
+                partitionId = (unsigned int)pid;
                 ++i;
             } else {
                 std::cerr << "Error: -a option requires partition ID." << std::endl;
                 return 1;
             }
-            if ( partitionId >= FM_MAX_FABRIC_PARTITIONS ) {
-                std::cout << "Invalid Partition ID." << std::endl;
-                return FM_ST_BADPARAM;
-            }
         } else if (std::string(argv[i]) == "-d") {
             operation = SHARED_FABRIC_CMD_DEACTIVATE_PARTITION;
             if (i + 1 < argc) {
-                partitionId = std::stoul(argv[i + 1]);
+                unsigned long pid;
+                try {
+                    pid = std::stoul(argv[i + 1]);
+                } catch (const std::exception& e) {
+                    std::cerr << "Error: -d option requires a valid partition ID." << std::endl;
+                    return 1;
+                }
+                if ( pid >= FM_MAX_FABRIC_PARTITIONS ) {
+                    std::cout << "Invalid Partition ID." << std::endl;
+                    return FM_ST_BADPARAM;
+                }
+                partitionId = (unsigned int)pid;
                 ++i;
             } else {
                 std::cerr << "Error: -d option requires partition ID." << std::endl;

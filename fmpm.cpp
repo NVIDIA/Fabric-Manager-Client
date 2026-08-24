@@ -43,7 +43,7 @@ parsePartitionIdlistString(std::string & partitionListStr, unsigned int * partit
 
         if ( partId < 0 || partId >= FM_MAX_FABRIC_PARTITIONS )
         {
-            printf("Invalid partition Id %u was given.\n", partId);
+            printf("Invalid partition Id %d was given.\n", partId);
             return FM_ST_BADPARAM;
         }
 
@@ -359,6 +359,10 @@ int main(int argc, char **argv)
                 std::cerr << "Error: -d option requires partition ID." << std::endl;
                 return FM_ST_BADPARAM;
             }
+            if ( partitionId >= FM_MAX_FABRIC_PARTITIONS ) {
+                std::cout << "Invalid Partition ID." << std::endl;
+                return FM_ST_BADPARAM;
+            }
         } else if (std::string(argv[i]) == "--set-activated-list") {
             operation = SHARED_FABRIC_CMD_SET_ACTIVATED_PARTITION_LIST;
             if (i + 1 < argc) {
@@ -421,18 +425,14 @@ int main(int argc, char **argv)
     {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mUnixSockPath);
         connectParams.addressIsUnixSocket = 1;
-		connectParams.addressType = NV_FM_API_ADDR_TYPE_UNIX;
+        connectParams.addressType = NV_FM_API_ADDR_TYPE_UNIX;
     }
-    if ( strnlen(mHostname, MAX_PATH_LEN) > 0 )
+    else if ( strnlen(mHostname, MAX_PATH_LEN) > 0 )
     {
         snprintf(connectParams.addressInfo, MAX_PATH_LEN, "%s", mHostname);
         connectParams.addressIsUnixSocket = 0;
-		connectParams.addressType = NV_FM_API_ADDR_TYPE_INET;
+        connectParams.addressType = NV_FM_API_ADDR_TYPE_INET;
     }
-
-
-    strncpy(connectParams.addressInfo, mHostname, sizeof(mHostname));
-    connectParams.addressIsUnixSocket = 0;
 
     fmReturn = fmConnect(&connectParams, &fmHandle);
     if (fmReturn != FM_ST_SUCCESS){

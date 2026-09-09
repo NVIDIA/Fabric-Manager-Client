@@ -32,6 +32,38 @@ To get started, install the NVIDIA Fabric Manager Development package on your bu
 On RHEL, this package is named "nvidia-fabricmanager-devel-\<version\>"  
 On Ubuntu, this package is named "nvidia-fabricmanager-dev-\<version\>"
 
+> [!IMPORTANT]
+> Some builds of the Ubuntu package install the linker symlink
+> `/usr/lib/x86_64-linux-gnu/libnvfm.so` without the `libnvfm.so.1` library it
+> points at. The symlink alone does not satisfy `-lnvfm`, so the build fails
+> with `cannot find -lnvfm`.
+>
+> You can check a package without installing it:
+>
+> ```
+> apt-get download nvidia-fabricmanager-dev=<version>
+> dpkg -c nvidia-fabricmanager-dev_<version>_amd64.deb | grep libnvfm
+> ```
+>
+> A usable package lists both `libnvfm.so` and `libnvfm.so.1`. If only the
+> symlink is listed, unpack a version-suffixed package and build against it
+> where it lies, without installing it:
+>
+> ```
+> apt-get download nvidia-fabricmanager-dev-575
+> dpkg -x nvidia-fabricmanager-dev-575_575.57.08-1_amd64.deb lib575/
+> make NVFM_LIB_DIRS=$PWD/lib575/usr/lib/x86_64-linux-gnu \
+>      LDFLAGS="-L$PWD/lib575/usr/lib/x86_64-linux-gnu -lnvfm -ljsoncpp -Wl,-rpath,$PWD/lib575/usr/lib/x86_64-linux-gnu"
+> ```
+>
+> Do not copy `libnvfm.so.1` into a system library directory instead. That puts
+> a library from one release ahead of the Fabric Manager the machine is running,
+> for every program on it. Behind `-rpath` it reaches only this binary.
+>
+> `NVFM_LIB_DIRS` is the list of directories checked for `libnvfm.so` before
+> linking, and is also how to point the build at a development package installed
+> anywhere outside the standard paths.
+
 Install the JSON CPP development package on your build environment.  
 On Ubuntu, this package is named "libjsoncpp-dev"  
 On RHEL, this package is named "jsoncpp-devel".  
